@@ -1,0 +1,111 @@
+.App__usersPage
+  background: url('./bg.svg')
+  background-size: cover
+  height: 100%
+  display: flex
+  justify-content: center
+
+.App__usersPage__container
+  height: 80vh
+  width: 60vw
+  background: #ffffff
+  align-self: center
+  box-shadow: 0px 0px 10px #000000
+
+$header-height: 12vh
+
+.App__usersPage__container__header
+  height: $header_height
+  width: 100%
+  background: #0049b0
+  text-align: center
+  line-height: $header-height
+  font-size: 300%
+  font-family: 'Ubuntu', sans-serif
+  color: #ffffff
+  font-weight: bold
+
+.App__usersPage__container__body
+  position: relative
+  top: 12%
+  height: 50%
+  width: 100%
+  display: flex
+  flex-direction: row
+
+  hr
+    width: 1px
+    height: 100%
+
+.App__usersPage__container__body__main
+  height: 100%
+  width: 50%
+  display: flex
+  justify-content: center
+
+.App__usersPage__container__body__main__form
+  height: 90%
+  width: 70%
+  position: relative
+  top: 5%
+
+  div
+    font-size: 250%
+    font-family: 'Ubuntu', sans-serif
+    font-weight: bold
+
+  form    
+    div
+      label
+        font-weight: normal
+        font-size: 50%
+      input
+        width: 100%
+        height: 3vh
+        font-size: 50%
+        box-shadow: 1px 1px 1px #000000
+
+    .button
+      font-size: 120%
+      line-height: 4.5vh
+      height: 4.5vh
+      width: 27%
+      background: #0049b0
+      margin-top: 2vh
+      border-radius: 5px
+      box-shadow: 1px 1px 1px #000000
+      font-weight: normal
+      color: #ffffff
+      text-align: center
+
+    .button:hover
+      cursor: pointer
+
+.App__usersPage__container__body__oauth
+  height: 100%
+  width: 50%
+  display: flex
+  justify-content: center
+
+.App__usersPage__container__body__oauth__wrap
+  height: 90%
+  width: 70%
+  position: relative
+  top: 5%
+
+.App__usersPage__container__footer
+  position: relative
+  top: 20%
+  width: 100%
+  display: flex
+  justify-content: center
+
+.App__usersPage__container__footer__signuplink
+  align-self: center
+  height: 6vh
+  line-height: 6vh
+  width: 50%
+  background: #eceeef
+  box-shadow: 0px 1px 5px #000000
+  text-align: center
+  font-size: 120%
