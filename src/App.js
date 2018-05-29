@@ -9,6 +9,7 @@ class App extends Component {
     return (
       <Router>
         <div className = 'App'>
+          <Route path = '/' component = { Dashboard } />
           <Route path = '/login' component = { LoginPage } />
           <Route path = '/signup' component = { SignUpPage } />
         </div>
@@ -92,7 +93,12 @@ class LoginPage extends Component {
           password: this.state.user.password
         })
       }
-    );
+    )
+    .then(
+      (response) => {
+        console.log(response);
+      }
+    )
   }
 
   render() {
@@ -136,6 +142,11 @@ class SignUpPage extends Component {
           password: this.state.user.password
         })
       }
+    )
+    .then(
+      (response) => {
+        console.log(response);
+      }
     );
   }
 
@@ -143,6 +154,18 @@ class SignUpPage extends Component {
     return (
       <UsersPage title = 'Sign Up' oauthMsg = 'You can also directly sign up via the following' footerMsg = 'Already have an account?' footerLink = '/login' footerLinkMsg = 'Login here!' compFunc = { this.signup } username = { this.state.user.username } password = { this.state.user.password } handleInputChange = { this.handleInputChange }/>
     )
+  }
+}
+
+class Dashboard extends Component {
+  constructor (props) {
+    super(props);
+  }
+
+  render () {
+    return {
+      
+    }
   }
 }
 
