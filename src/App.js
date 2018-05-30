@@ -4,12 +4,166 @@ import './App.css';
 
 const BASEURL = 'http://localhost:5000';
 
+const data = {
+	username : "kunal",
+	password : "mohta",
+	data : {
+		notes : [
+			{
+				title : "note1",
+				content : "note1 content",
+				labels : [
+					"label1",
+					"label2"
+				],
+				color : "green",
+				created : "",
+				updated : ""
+			},
+			{
+				title : "note2",
+				content : "note2 content",
+				labels : [
+					"label1"
+				],
+				color : "red",
+				created : "",
+				updated : ""
+      },
+      {
+				title : "note1",
+				content : "note1 content",
+				labels : [
+					"label1",
+					"label2"
+				],
+				color : "green",
+				created : "",
+				updated : ""
+			},
+			{
+				title : "note2",
+				content : "note2 content",
+				labels : [
+					"label1"
+				],
+				color : "red",
+				created : "",
+				updated : ""
+			},
+			{
+				title : "note2",
+				content : "note2 content",
+				labels : [
+					"label1"
+				],
+				color : "red",
+				created : "",
+				updated : ""
+      },
+      {
+				title : "note1",
+				content : "note1 content",
+				labels : [
+					"label1",
+					"label2"
+				],
+				color : "green",
+				created : "",
+				updated : ""
+			},
+			{
+				title : "note2",
+				content : "note2 content",
+				labels : [
+					"label1"
+				],
+				color : "red",
+				created : "",
+				updated : ""
+      },
+      {
+				title : "note1",
+				content : "note1 content",
+				labels : [
+					"label1",
+					"label2"
+				],
+				color : "green",
+				created : "",
+				updated : ""
+			},
+			{
+				title : "note2",
+				content : "note2 content",
+				labels : [
+					"label1"
+				],
+				color : "red",
+				created : "",
+				updated : ""
+			},
+			{
+				title : "note2",
+				content : "note2 content",
+				labels : [
+					"label1"
+				],
+				color : "red",
+				created : "",
+				updated : ""
+			},
+      {
+				title : "note1",
+				content : "note1 content",
+				labels : [
+					"label1",
+					"label2"
+				],
+				color : "green",
+				created : "",
+				updated : ""
+			},
+			{
+				title : "note2",
+				content : "note2 content",
+				labels : [
+					"label1"
+				],
+				color : "red",
+				created : "",
+				updated : ""
+			},
+			{
+				title : "note2",
+				content : "note2 content",
+				labels : [
+					"label1"
+				],
+				color : "red",
+				created : "",
+				updated : ""
+			}
+		],
+		archived : [
+			{
+				title : "archived1",
+				content : "archived1 content",
+				labels : [ ],
+				color : "blue",
+				created : "",
+				updated : ""
+			}
+		]
+	}
+};
+
 class App extends Component {
   render() {
     return (
       <Router>
         <div className = 'App'>
-          <Route path = '/' component = { Dashboard } />
+          <Route exact path = '/' component = { Dashboard } />
           <Route path = '/login' component = { LoginPage } />
           <Route path = '/signup' component = { SignUpPage } />
         </div>
@@ -160,12 +314,94 @@ class SignUpPage extends Component {
 class Dashboard extends Component {
   constructor (props) {
     super(props);
+
+    this.state = {
+      data: data.data
+    }
   }
 
   render () {
-    return {
-      
+    return (
+      <div className = 'App__dashboard'>
+        <div className = 'App__dashboard__header'>
+          <div className = 'App__dashboard__header__title'>{ data.username }'s Notes</div>
+          <SignOutButton class = 'App__dashboard__header__signOutButton' />
+          <AddNoteButton class = 'App__dashboard__header__addNoteButton' />
+        </div>
+        <div className = 'App__dashboard__maingrid'>
+          <div className = 'App__dashboard__maingrid__sidebar'>
+            <ul className = 'App__dashboard__maingrid__sidebar__options'>
+              <li>Sort by
+                <ul>
+
+                </ul>
+              </li>
+              <li>Archived Notes</li>
+            </ul>
+          </div>
+
+          <div className = 'App__dashboard__maingrid__mainbody'>
+            {
+              this.state.data.notes.map(
+                (note) => <Note title = { note.title } content = { note.content } color = { note.color } labels = { note.labels }/>
+              )
+            }
+          </div>
+        </div>
+      </div>
+    )
+  }
+}
+
+class SignOutButton extends Component {
+  render () {
+    return (
+      <div className = { this.props.class } title = 'Sign Out'>Sign Out</div>
+    )
+  }
+}
+
+class AddNoteButton extends Component {
+  render () {
+    return (
+      <div className = { this.props.class } title = 'Add Note'></div>
+    )
+  }
+}
+
+class Note extends Component {
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      noteColor: {
+        background: this.props.color
+      } 
     }
+  }
+
+  render () {
+    return (
+      <div className = 'note'>
+        <div className = 'note__colorBar' style = { this.state.noteColor }></div>
+        <div className = 'note__title'>{ this.props.title }</div>
+        <div className = 'note__body'>{ this.props.content }</div>
+        <div className = 'note__labelSection'>
+          {
+            this.props.labels.map(
+              (label) => <div className = 'note__labelSection__label' style = { this.state.noteColor } >{ label }</div>
+            )
+          }
+        </div>
+        <div className = 'note__operations'>
+          <div className = 'note__operations__addLabel'>Add Label</div>
+          
+          <div className = 'note__operations__palette' title = 'Change Note Color'></div>
+          <div className = 'note__operations__archive' title = 'Archive Note'></div>
+          <div className = 'note__operations__delete' title = 'Delete Note'></div>
+        </div>
+      </div>
+    );
   }
 }
 
