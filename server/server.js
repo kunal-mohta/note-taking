@@ -1,7 +1,6 @@
 /* Packages */
 const express = require('express');
 const app = express();
-const path = require('path');
 const mongoose = require('mongoose');
 
 //Body parser to parse response body
@@ -19,8 +18,9 @@ module.exports.dbConnection = DB_CONNECTION;
 
 /* Routers */
 const usersRouter = require('./routers/usersRouter.js');
+const dataRouter = require('./routers/dataRouter.js');
 app.use('/users', usersRouter);
-
+app.use('/userData', dataRouter);
 
 /* Mongoose */
 

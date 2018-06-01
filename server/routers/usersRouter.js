@@ -1,7 +1,8 @@
 /* Packages */
 const express = require('express');
-const app = express();
-const path = require('path');
+const bcrypt = require('bcrypt');
+
+const saltRounds = 10;
 
 /* External files */
 const server = require('../server.js');
@@ -14,7 +15,7 @@ usersRouter.post ('/login', (req, res) => {
   }
   else {
     let Users = server.users;
-    
+
     Users.findOne(
       {
         'username' : req.body.username
@@ -30,24 +31,30 @@ usersRouter.post ('/login', (req, res) => {
         }
         else {
           if (user) {
-            if (user.password === req.body.password) {
-              console.log('Successful Login');
-              res.status(200)
-              .send({
-                message: 'Successful login'
-              });
-            }
-            else {
-              console.log('Wrong Password');
-              res.status(403)
-              .send({
-                message: 'Wrong username or password'
-                //because should not reveal what was wrong
-              });
-            }
+            bcrypt.compare(req.body.password, user.password)
+            .then(
+              (resBool) => {
+                if (resBool) {
+                  console.log('Successful Login');
+                  res.status(200)
+                  .send({
+                    message: 'Successful login',
+                    userData: user.data
+                  });
+                }
+                else {
+                  console.log('Wrong Password');
+                  res.status(403)
+                  .send({
+                    message: 'Wrong username or password'
+                    //because should not reveal what was wrong
+                  });
+                }
+              }
+            );
           }
           else {
-            console.log('User Not Fount');
+            console.log('User Not Found');
             res.status(403)
             .send({
               message: 'Wrong username or password'
@@ -85,7 +92,6 @@ usersRouter.post ('/signup', (req, res) => {
             if (user) {
               //user already exists
               console.log('User with the username already exists');
-              console.log(user);
               res.status(409)
               .send({
                 message: 'This username is taken. Try a different one.'
@@ -93,18 +99,32 @@ usersRouter.post ('/signup', (req, res) => {
             } 
             else {
               //creat a new user
-              Users.create(
-                {
-                  username: req.body.username,
-                  password: req.body.password
-                },
-                (err, user) => {
-                  console.log('User successfully created');
-                  console.log(user);
-                  res.status(200)
-                  .send({
-                    message: 'The user was successfully created'
-                  });
+              bcrypt.hash(req.body.password, saltRounds)
+              .then(
+                (hash) => {
+                  Users.create(
+                    {
+                      username: req.body.username,
+                      password: hash,
+                      data: {
+                        notes: [],
+                        archived: []
+                      }
+                    },
+                    (err, user) => {
+                      if (err) {
+                        console.log('Error creating the user');
+                      }
+                      else {
+                        console.log('User successfully created');
+                        res.status(200)
+                        .send({
+                          message: 'The user was successfully created',
+                          userData: user.data
+                        });
+                      }
+                    }
+                  );
                 }
               );
             }

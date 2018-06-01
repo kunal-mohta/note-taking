@@ -1,9 +1,9 @@
 .App__usersPage
-  background: url('./bg.svg')
-  background-size: cover
-  height: 100%
-  display: flex
-  justify-content: center
+    background: url('./bg.svg')
+    background-size: cover
+    height: 100%
+    display: flex
+    justify-content: center
 
 .App__usersPage__container
   height: 80vh
@@ -104,8 +104,62 @@ $header-height: 12vh
   align-self: center
   height: 6vh
   line-height: 6vh
-  width: 50%
+  width: 70%
   background: #eceeef
   box-shadow: 0px 1px 5px #000000
   text-align: center
   font-size: 120%
+
+@media (max-width: 768px)
+  .App__usersPage__container
+    width: 90%
+    height: 90%
+
+  $header-height-handheld: $header-height - 3vh
+  .App__usersPage__container__header
+    height: $header-height-handheld
+    font-size: 170%
+    line-height: $header-height-handheld
+
+  .App__usersPage__container__body
+    height: 70%
+    top: 0%
+    flex-direction: column
+
+    hr
+      height: 1px
+      width: 90%
+      display: none
+
+  .App__usersPage__container__body__main
+    width: 100%
+  
+  .App__usersPage__container__body__main__form
+    width: 90%
+
+    div
+      font-size: 200%
+      height: 5vh
+
+    form
+      div
+        height: 11vh
+        input
+          width: 90%
+
+  .App__usersPage__container__body__oauth
+    width: 100%
+    margin-top: 8%
+
+  .App__usersPage__container__body__oauth__wrap
+    width: 95%
+    text-align: center
+    font-size: 80%
+
+  .App__usersPage__container__footer
+    top: 5%
+    font-size: 80%
+
+  .App__usersPage__container__footer__signuplink
+    width: 90%
+    height: 200%
