@@ -1,7 +1,9 @@
-body
+body, html
   background: #dfeff1
   height: 100vh
   overflow: hidden
+  margin: 0
+  position: relative
 
 $header-height: 12vh
 $theme-color: #0049b0
@@ -105,8 +107,8 @@ $sidebar-width: 17vw
   border-radius: 5px
   margin: 2vh 0 0 2vh
   display: grid
-  grid-template-rows: 3% auto 52% 15% 15%
-  grid-template-columns: 100%
+  grid-template-rows: [first-line] 3% auto 52% 15% 15% [last-line]
+  grid-template-columns: [left] 100% [middle] 100% [right]
   box-shadow: 2px 2px 10px #000000
 
 .note__colorBar
@@ -125,6 +127,7 @@ $sidebar-width: 17vw
 .note__labelSection
   grid-area: 4 / 1 / 5 / 1
   display: flex
+  align-items: center
 
 .note__labelSection__label
   background: white
@@ -133,6 +136,10 @@ $sidebar-width: 17vw
   margin-bottom: 2%
   padding: 2% 3%
   border-radius: 5px
+  color: #ffffff
+
+.note__labelSection__label:hover
+  cursor: pointer
 
 .note__operations
   grid-area: 5 / 1 / 6 / 2
@@ -141,9 +148,7 @@ $sidebar-width: 17vw
 
 .note__operations__addLabel
   grid-area: 1 / 1 / 2 / 4
-  background: blue
-  height: 70%
-  width: 70%
+  width: 80%
   font-size: 110%
   justify-self: center
   align-self: center
@@ -151,6 +156,7 @@ $sidebar-width: 17vw
   text-align: center
   border-radius: 5px
   transition: transform 0.1s linear
+  color: #ffffff
 
 .note__operations__addLabel:hover
   transform: scale(1.1)
@@ -167,7 +173,7 @@ $sidebar-width: 17vw
   cursor: pointer
 
 .note__operations__palette
-  grid-area: 1 / 5 / 2 / 6
+  grid-area: 1 / 6 / 2 / 7
   background: url('./palette.svg')
   +note-button()
 
@@ -189,6 +195,75 @@ $sidebar-width: 17vw
 
 .note__operations__delete:hover
   +note-button-hover()
+
+.note__optionsPage
+  height: 100%
+  width: 100%
+  background: white
+  z-index: 2
+  grid-area: first-line / left / last-line / middle
+  display: grid
+  grid-template-rows: [row1] 12% [row2] 90% [last-row]
+  grid-template-columns: [col1] 100% [last-col]
+
+.note__optionsPage__close
+  grid-area: row1 / col1 / row2 / last-col
+  height: 7%
+  width: 7%
+  margin: 2%
+  background: url('left-black.svg')
+  background-size: cover
+
+.note__optionsPage__close:hover
+  cursor: pointer
+
+.note__optionsPage__content
+  height: 80%
+  width: 100%
+  font-size: 130%
+  margin: 10% 0 0 10%
+
+  input
+    margin: 5% 0 0 0
+    height: 10%
+    width: 80%
+    font-size: 100%
+
+.note__optionsPage__content__title
+  width: 80%
+
+.note__optionsPage__content__addButton
+  margin: 5% 0 0 0
+  // height: 15%
+  width: 30%
+  font-size: 90%
+  line-height: 200%
+  text-align: center
+  border-radius: 5px
+  transition: transform 0.05s linear
+  background: blue
+
+.note__optionsPage__content__addButton:hover
+  transform: scale(1.1)
+  cursor: pointer
+
+.note__optionsPage__content__colorPalette
+  height: 70%
+  width: 80%
+  margin-top: 10%
+  display: grid
+  grid-template-rows: 25% 25% 25%
+  grid-template-columns: 25% 25% 25%
+
+.note__optionsPage__content__colorPalette__color
+  height: 75%
+  width: 75%
+  box-sizing: border-box
+  transition: transform 0.1s linear
+
+.note__optionsPage__content__colorPalette__color:hover
+  transform: scale(1.1)
+  cursor: pointer
 
 .App__dashboard__addNoteDialog
   height: 60vh
@@ -259,7 +334,7 @@ $sidebar-width: 17vw
 
   .App__dashboard__header__addNoteButton
     margin: 0
-    background: url('plus.png')
+    background: url('plus.png') #ffffff
     background-size: cover
     position: fixed
     top: 75vh
@@ -268,7 +343,7 @@ $sidebar-width: 17vw
     width: 9vh
     border-radius: 50%
     box-shadow: 0px 0px 1px #000000
-    z-index: 2
+    z-index: 3
 
   .App__dashboard__header__addNoteButton:hover
     transform: scale(1)
@@ -303,22 +378,25 @@ $sidebar-width: 17vw
     grid-template-columns: 100%
     grid-row-gap: 1.5vh
 
-    .note
-      margin-left: 0
-      height: 40vh
-      width: 80%
-      justify-self: center
-      grid-template-rows: 3% auto 50% 12% 17%
+  .note
+    margin-left: 0
+    height: 40vh
+    width: 80%
+    justify-self: center
+    grid-template-rows: [first-line] 3% auto 50% 12% 17% [last-line]
 
-    .note__title
-      font-size: 150%
+  .note__title
+    font-size: 150%
 
-    .note__labelSection__label
-      font-size: 90%
+  .note__labelSection__label
+    font-size: 90%
 
-    .note__operations__addLabel
-      font-size: 100%
+  .note__operations__addLabel
+    font-size: 100%
 
+  .note__optionsPage__content__colorPalette__color:hover
+    transform: scale(1)
+    
   .App__dashboard__addNoteDialog
     height: 90%
     width: 100%
@@ -351,6 +429,7 @@ $sidebar-width: 17vw
       grid-area: 3 / 1 / 4 / 2
       justify-self: left
       margin-left: 5%
+      display: block
 
   .App__dashboard__hamburger
     height: 100vh - $header-height-handheld

@@ -51,6 +51,9 @@ usersRouter.post ('/login', (req, res) => {
                   });
                 }
               }
+            )
+            .catch(
+              (error) => console.log(error)
             );
           }
           else {
@@ -126,6 +129,9 @@ usersRouter.post ('/signup', (req, res) => {
                     }
                   );
                 }
+              )
+              .catch(
+                (error) => console.log(error)
               );
             }
           }
