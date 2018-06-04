@@ -73,5 +73,6 @@ Visit [http://localhost:3000/](http://localhost:3000/) in your browser to use th
 - [BEM methodology](http://getbem.com/introduction/)
 - [Explicit and Implicit Grids](https://css-tricks.com/difference-explicit-implicit-grids/)
 - [Why localStorage is bad for JWT](https://dev.to/rdegges/please-stop-using-local-storage-1i04)
+- [JWT vs Sessions](https://scotch.io/bar-talk/why-jwts-suck-as-session-tokens)
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).

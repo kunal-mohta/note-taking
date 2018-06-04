@@ -412,7 +412,7 @@ class Dashboard extends Component {
   }
 
   windowReload () {
-      if (localStorage.getItem('jwt') != 'false') {
+      if (localStorage.getItem('jwt') !== 'false') {
         fetch(
           BASEURL + '/userData/sessionLogin',
           {
