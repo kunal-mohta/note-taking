@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const saltRounds = 10;
-const jwtPrivateKey = process.env.JWT_PVT_KEY;
+const jwtPrivateKey = process.env.JWT_PVT_KEY || 'unsafe_private_key';
 const jwtExpireTime = 60*60; //in seconds
 
 /* External files */

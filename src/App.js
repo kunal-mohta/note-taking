@@ -21,6 +21,7 @@ class App extends Component {
             <PrivateRoute exact path = '/dashboard' component = { Dashboard } />
             <Route path = '/login' component = { LoginPage } />
             <Route path = '/signup' component = { SignUpPage } />
+            <Route path = '/' component = { DefaultLink } />
           </Switch>
         </div>
       </Router>
@@ -32,6 +33,12 @@ class PrivateRoute extends Component {
   render () {
     if (isLogin) return <Route path = { this.props.path } component = { this.props.component }/>
     else return <Redirect to = { {pathname: '/login'} } />
+  }
+}
+
+class DefaultLink extends Component {
+  render () {
+    return <Redirect to = { {pathname: 'dashboard'} } />
   }
 }
 
