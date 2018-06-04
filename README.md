@@ -75,4 +75,9 @@ Visit [http://localhost:3000/](http://localhost:3000/) in your browser to use th
 - [Why localStorage is bad for JWT](https://dev.to/rdegges/please-stop-using-local-storage-1i04)
 - [JWT vs Sessions](https://scotch.io/bar-talk/why-jwts-suck-as-session-tokens)
 
+### To Do
+- Sorting notes
+- Form validation (both frontend and backend)
+- OAuth
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
