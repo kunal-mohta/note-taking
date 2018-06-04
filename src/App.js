@@ -2,63 +2,14 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link, Redirect, Switch } from 'react-router-dom';
 import './App.css';
 
-const BASEURL = 'http://localhost:5000';
+const BASEURL = '';
+const DEFAULT_NOTE_COLOR = '#5628b4';
 
 let isLogin = true;
 
-const data = {
-	username : "kunal",
-	password : "mohta",
-	data : {
-		notes : [
-			{
-				title : "note1",
-				content : "note1 content",
-				labels : [
-					"label1",
-					"label2"
-				],
-				color : "green",
-				created : "",
-				updated : ""
-			},
-			{
-				title : "note2",
-				content : "note2 content",
-				labels : [
-					"label1"
-				],
-				color : "red",
-				created : "",
-				updated : ""
-      }
-		]
-	}
-};
-
 let activeUserData = {
-  notes: [
-    {
-      title : "note1",
-      content : "note1 content",
-      labels : [
-        "label1",
-        "label2"
-      ],
-      color : "green",
-      created : "",
-      updated : ""
-    },
-    {
-      title : "note2",
-      content : "note2 content",
-      labels : [
-        "label1"
-      ],
-      color : "red",
-    }
-  ],
-  archived: []
+  username: '',
+  notes: []
 }
 
 class App extends Component {
@@ -93,7 +44,7 @@ class UsersPage extends Component {
           <div className = 'App__usersPage__container__body'>
             <div className = 'App__usersPage__container__body__main'>
               <div className = 'App__usersPage__container__body__main__form'>
-                <div>{ this.props.title }</div>
+                <div className = 'title'>{ this.props.title }</div>
                 <form>
                   <div>
                     <label>Username</label>
@@ -104,6 +55,7 @@ class UsersPage extends Component {
                     <input type = 'password' value = { this.props.password } onChange = { this.props.handleInputChange.bind(this, 'password') }></input>
                   </div>
                   <div className = 'button' onClick = { this.props.compFunc }>{ this.props.title }</div>
+                  <div className = 'errMsg'>{ this.props.errMsg }</div>
                 </form>
               </div>
             </div>
@@ -135,7 +87,8 @@ class LoginPage extends Component {
       user: {
         username: '',
         password: ''
-      }
+      },
+      errMsg: ''
     }
   }
 
@@ -168,9 +121,10 @@ class LoginPage extends Component {
             response.json()
             .then(
               (data) => {
+                localStorage.setItem('jwt', data.jwt);
                 isLogin = true;
+                activeUserData = data.userData;
                 this.props.history.push('/dashboard');
-                activeUserData = data.userData
               }
             );
             break;
@@ -179,7 +133,10 @@ class LoginPage extends Component {
             //Wrong username/password
             response.json()
             .then(
-              (data) => console.log(data.message)
+              (data) => {
+                console.log(data.message);
+                this.setState({ errMsg: data.message });
+              }
             );
             break;
 
@@ -187,19 +144,28 @@ class LoginPage extends Component {
             //Internal Server Error
             response.json()
             .then(
-              (data) => console.log(data.message)
+              (data) => {
+                console.log(data.message);
+                this.setState({ errMsg: data.message });
+              }
             );
             break;
 
           default: 
+            alert('Unhandled erro. Contact dev or login again');
         }
+      }
+    )
+    .catch (
+      (error) => {
+        alert(error);
       }
     )
   }
 
   render() {
     return (
-      <UsersPage title = 'Login' oauthMsg = 'If you have already linked your account, then sign in with the following' footerMsg = 'Don&apos;t have and account yet?' footerLink = '/signup' footerLinkMsg = 'Sign up here!' compFunc = { this.login } username = { this.state.user.username } password = { this.state.user.password } handleInputChange = { this.handleInputChange }/>
+      <UsersPage title = 'Login' oauthMsg = 'If you have already linked your account, then sign in with the following' footerMsg = 'Don&apos;t have and account yet?' footerLink = '/signup' footerLinkMsg = 'Sign up here!' compFunc = { this.login } username = { this.state.user.username } password = { this.state.user.password } handleInputChange = { this.handleInputChange } errMsg = { this.state.errMsg }/>
     )
   }
 }
@@ -214,7 +180,8 @@ class SignUpPage extends Component {
       user: {
         username: '',
         password: ''
-      }
+      },
+      errMsg: ''
     }
   }
 
@@ -247,9 +214,13 @@ class SignUpPage extends Component {
             response.json()
             .then(
               (data) => {
+                localStorage.setItem('jwt', data.jwt);
                 isLogin = true;
+                activeUserData = {
+                  username: this.state.user.username,
+                  notes: []
+                }
                 this.props.history.push('/dashboard');
-                activeUserData = data.userData
               }
             );
             break;
@@ -258,7 +229,10 @@ class SignUpPage extends Component {
             //User already exists
             response.json()
             .then(
-              (data) => console.log(data.message)
+              (data) => {
+                console.log(data.message);
+                this.setState({ errMsg: data.message });
+              }
             );
             break;
 
@@ -266,7 +240,10 @@ class SignUpPage extends Component {
             //Internal Server Error
             response.json()
             .then(
-              (data) => console.log(data.message)
+              (data) => {
+                console.log(data.message);
+                this.setState({ errMsg: data.message }) ;
+              }
             );
             break;
 
@@ -278,7 +255,7 @@ class SignUpPage extends Component {
 
   render() {
     return (
-      <UsersPage title = 'Sign Up' oauthMsg = 'You can also directly sign up via the following' footerMsg = 'Already have an account?' footerLink = '/login' footerLinkMsg = 'Login here!' compFunc = { this.signup } username = { this.state.user.username } password = { this.state.user.password } handleInputChange = { this.handleInputChange }/>
+      <UsersPage title = 'Sign Up' oauthMsg = 'You can also directly sign up via the following' footerMsg = 'Already have an account?' footerLink = '/login' footerLinkMsg = 'Login here!' compFunc = { this.signup } username = { this.state.user.username } password = { this.state.user.password } handleInputChange = { this.handleInputChange } errMsg = { this.state.errMsg }/>
     )
   }
 }
@@ -301,6 +278,7 @@ class Dashboard extends Component {
     this.addColorFunction = this.addColorFunction.bind(this);
     this.addLabelFunction = this.addLabelFunction.bind(this);
     this.deleteLabelFunction = this.deleteLabelFunction.bind(this);
+    this.signOutFunction = this.signOutFunction.bind(this);
 
     //clicking anywhere outside note dialog should close the note dialog
     document.getElementsByTagName('body')[0].addEventListener('click', (e) => {
@@ -311,6 +289,8 @@ class Dashboard extends Component {
         this.exitDialog();
       }
     });
+
+    window.onload = this.windowReload.bind(this);
   }
 
   openNoteDialog () {
@@ -334,7 +314,7 @@ class Dashboard extends Component {
       title: newNoteData.title,
       content: newNoteData.content,
       labels: [],
-      color: '',
+      color: DEFAULT_NOTE_COLOR,
       created: '',
       updated: ''
     }
@@ -368,16 +348,130 @@ class Dashboard extends Component {
     this.updateState();
   }
 
-  updateState () {
-    this.setState({ data: activeUserData });
+  sortByFunction () {
+    alert('Not available right now');
   }
 
+  signOutFunction () {
+    localStorage.setItem('jwt', false);
+    this.props.history.push('/login');
+  }
+
+  updateState () {
+    fetch(
+      BASEURL + '/userData/update',
+      {
+        method: 'post',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          jwt: localStorage.getItem('jwt'),
+          userData: activeUserData
+        })
+      }
+    )
+    .then(
+      (response) => {
+        switch (response.status) {
+          case 200:
+            this.setState({ data: activeUserData });
+            break;
+          
+          case 401:
+            response.json()
+            .then(
+              (data) => {
+                alert(data.message);
+              }
+            )
+            break;
+          
+          case 500:
+            response.json()
+            .then(
+              (data) => {
+                alert(data.message);
+              }
+            )
+            break;
+
+          default:
+            alert('Undhandled error. Contact dev or please try logging in again');
+        }
+      }
+    );
+  }
+
+  windowReload () {
+      if (localStorage.getItem('jwt') != 'false') {
+        fetch(
+          BASEURL + '/userData/sessionLogin',
+          {
+            method: 'post',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              jwt: localStorage.getItem('jwt'),
+            })
+          }
+        )
+        .then(
+          (response) => {
+            switch (response.status) {
+              case 200:
+                response.json()
+                .then(
+                  (data) => {
+                    activeUserData = data.userData;
+                    this.setState({ data: activeUserData });
+                  }
+                );
+                break;
+              
+              case 401:
+                response.json()
+                .then(
+                  (data) => {
+                    alert(data.message);
+                    this.props.history.push('/login');
+                  }
+                );
+                break;
+              
+              case 500:
+                response.json()
+                .then(
+                  (data) => {
+                    alert(data.message);
+                    this.props.history.push('/login');
+                  }
+                );
+                break;
+
+              default: 
+                alert('Unhandled error. Contact dev or try logging in again');
+            }
+          }
+        )
+        .catch (
+          (e) => console.log(e)
+        );
+      }
+      else {
+        this.props.history.push('/login');
+      }
+  }
+  
   render () {
     return (
       <div className = 'App__dashboard'>
         <div className = 'App__dashboard__header'>
-          <div className = 'App__dashboard__header__title'>{ data.username }'s Notes</div>
-          <SignOutButton class = 'App__dashboard__header__signOutButton' />
+          <div className = 'App__dashboard__header__title'>{ this.state.data.username }'s Notes</div>
+          <SignOutButton class = 'App__dashboard__header__signOutButton' signOutFunc = { this.signOutFunction }/>
           <AddNoteButton onClickFunction = { this.openNoteDialog } class = 'App__dashboard__header__addNoteButton' />
 
           <div className = 'App__dashboard__header__hamburgericon' onClick = { this.openHam } style = { (this.state.isHamOpen) ? {display: 'none'} : {} }></div>
@@ -386,7 +480,7 @@ class Dashboard extends Component {
         <div className = 'App__dashboard__maingrid'>
           <div className = 'App__dashboard__maingrid__sidebar'>
             <ul className = 'App__dashboard__maingrid__sidebar__options'>
-              <li>Sort by
+              <li onClick = { this.sortByFunction }>Sort by
                 <ul>
 
                 </ul>
@@ -406,9 +500,9 @@ class Dashboard extends Component {
 
         <div className = 'App__dashboard__hamburger' style = { (this.state.isHamOpen) ? {left:'0vw'} : {left:'100vw'} }>
           <ul className = 'App__dashboard__hamburger__options'>
-            <li>Sort By..</li>
+            <li onClick = { this.sortByFunction }>Sort By..</li>
             {/* <li>Archived Notes</li> */}
-            <li>Sign Out</li>
+            <li onClick = { this.signOutFunction }>Sign Out</li>
           </ul>
         </div>
 
@@ -459,31 +553,9 @@ class AddNoteDialog extends Component {
 }
 
 class SignOutButton extends Component {
-  constructor (props) {
-    super(props);
-    this.signOutFunction = this.signOutFunction.bind(this);
-  }
-
-  signOutFunction () {
-    fetch(
-      BASEURL + '/userData/update',
-      {
-        method: 'post',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(activeUserData)
-      }
-    )
-    .then(
-      (response) => {}
-    )
-  }
-
   render () {
     return (
-      <div className = { this.props.class } title = 'Sign Out' onClick = { this.signOutFunction }>Sign Out</div>
+      <div className = { this.props.class } title = 'Sign Out' onClick = { this.props.signOutFunc }>Sign Out</div>
     )
   }
 }
@@ -548,8 +620,8 @@ class Note extends Component {
           <div className = 'note__operations__delete' title = 'Delete Note' onClick = { this.props.deleteNoteFunc.bind(this.props.parentContext, this.props.noteId) }></div>
         </div>
 
-        <LabelPage isOpen = { this.state.isLabelPage } closeFunc = { this.closeLabelPage } addLabelFunc = { this.props.addLabelFunc.bind(null, this.closeLabelPage) } noteId = { this.props.noteId } />
-        <ColorPage isOpen = { this.state.isColorPage } closeFunc = { this.closeColorPage } addColorFunc = { this.props.addColorFunc }/>
+        <LabelPage isOpen = { this.state.isLabelPage } closeFunc = { this.closeLabelPage } addLabelFunc = { this.props.addLabelFunc.bind(null, this.closeLabelPage) } noteId = { this.props.noteId } color = { this.props.color }/>
+        <ColorPage isOpen = { this.state.isColorPage } closeFunc = { this.closeColorPage } addColorFunc = { this.props.addColorFunc } color = { this.props.color }/>
       </div>
     );
   }
@@ -598,7 +670,7 @@ class LabelPage extends Component {
           What label do you want to add?
         </div>
         <input type = 'text' placeholder = 'Label Name' value = { this.state.labelContent } onChange = { this.handleInputChange } />
-        <div className = 'note__optionsPage__content__addButton' onClick = { this.props.addLabelFunc.bind(null, this.props.noteId, this.state.labelContent) } >Add</div>
+        <div className = 'note__optionsPage__content__addButton' style = { {background:this.props.color} } onClick = { this.props.addLabelFunc.bind(null, this.props.noteId, this.state.labelContent) } >Add</div>
 
       </NoteOptionPages>
     )
@@ -611,8 +683,12 @@ class ColorPage extends Component {
     
     this.state = {
       colors: ['#5628b4', '#d80e70', '#f7b236', '#0f3057', '#ff561e', '#2a9c6e', '#8d1c40', '#e7455f', '#e43a19'],
-      selectedColorIndex: null
+      selectedColorIndex: ''
     }
+  }
+
+  componentDidMount () {
+    this.setState({ selectedColorIndex: this.state.colors.indexOf(this.props.color) });
   }
 
   selectColor (color, index) {

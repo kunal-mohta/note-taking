@@ -49,13 +49,14 @@ $header-height: 12vh
   position: relative
   top: 5%
 
-  div
+  .title
     font-size: 250%
     font-family: 'Ubuntu', sans-serif
     font-weight: bold
 
   form    
     div
+      font-size: 250%
       label
         font-weight: normal
         font-size: 50%
@@ -80,6 +81,10 @@ $header-height: 12vh
 
     .button:hover
       cursor: pointer
+
+    .errMsg
+      font-size: 2vh
+      color: #ff0000
 
 .App__usersPage__container__body__oauth
   height: 100%
@@ -139,17 +144,25 @@ $header-height: 12vh
 
     div
       font-size: 200%
-      height: 5vh
+      height: 1vh
 
     form
+      margin-top: 10%
       div
-        height: 11vh
+        font-size: 200%
+        height: 10vh
         input
           width: 90%
+      
+      .button
+        margin-top: 8%
+
+      .errMsg
+        font-size: 2vh
 
   .App__usersPage__container__body__oauth
     width: 100%
-    margin-top: 8%
+    margin-top: 20%
 
   .App__usersPage__container__body__oauth__wrap
     width: 95%

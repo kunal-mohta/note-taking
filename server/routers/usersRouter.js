@@ -1,8 +1,12 @@
 /* Packages */
 const express = require('express');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const saltRounds = 10;
+const jwtPrivateKey = process.env.JWT_PVT_KEY;
+const jwtExpireTime = 60*60; //in seconds
 
 /* External files */
 const server = require('../server.js');
@@ -36,11 +40,35 @@ usersRouter.post ('/login', (req, res) => {
               (resBool) => {
                 if (resBool) {
                   console.log('Successful Login');
-                  res.status(200)
-                  .send({
-                    message: 'Successful login',
-                    userData: user.data
-                  });
+
+                  //creating jwt
+                  jwt.sign(
+                    {
+                      username: req.body.username,
+                      password: req.body.password
+                    },
+                    jwtPrivateKey,
+                    {
+                      expiresIn: jwtExpireTime
+                    },
+                    (err, token) => {
+                      if (err) {
+                        console.log(err);
+                        res.status(500)
+                        .send({
+                          message: 'Internal Server Error: JWT error'
+                        });
+                      }
+                      else {
+                        res.status(200)
+                        .send({
+                          message: 'Successful login',
+                          userData: user.userData,
+                          jwt: token
+                        });
+                      }
+                    }
+                  );
                 }
                 else {
                   console.log('Wrong Password');
@@ -109,9 +137,9 @@ usersRouter.post ('/signup', (req, res) => {
                     {
                       username: req.body.username,
                       password: hash,
-                      data: {
-                        notes: [],
-                        archived: []
+                      userData: {
+                        username: req.body.username,
+                        notes: []
                       }
                     },
                     (err, user) => {
@@ -120,11 +148,35 @@ usersRouter.post ('/signup', (req, res) => {
                       }
                       else {
                         console.log('User successfully created');
-                        res.status(200)
-                        .send({
-                          message: 'The user was successfully created',
-                          userData: user.data
-                        });
+
+                        //creating jwt
+                        jwt.sign(
+                          {
+                            username: req.body.username,
+                            password: hash
+                          },
+                          jwtPrivateKey,
+                          {
+                            expiresIn: jwtExpireTime
+                          },
+                          (err, token) => {
+                            if (err) {
+                              console.log(err);
+                              res.status(500)
+                              .send({
+                                message: 'Internal Server Error: JWT error'
+                              });
+                            }
+                            else {
+                              res.status(200)
+                              .send({
+                                message: 'The user was successfully created',
+                                userData: user.data,
+                                jwt: token
+                              });
+                            }
+                          }
+                        )
                       }
                     }
                   );
