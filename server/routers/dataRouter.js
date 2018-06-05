@@ -11,36 +11,9 @@ const jwtPrivateKey = process.env.JWT_PVT_KEY || 'unsafe_private_key';
 const dataRouter = express.Router();
 
 //authentication middleware
-function authenticateUser (req, res, next) {
-  jwt.verify(
-    req.body.jwt,
-    jwtPrivateKey,
-    (error, decoded) => {
-      if (error) {
-        console.log(error);
-        res.status(500)
-        .send({
-          message: 'Internal Server Error: JWT verifcation error'
-        });
-      }
-      else {
-        if (decoded) {
-          req.jwtData = decoded;
-          next();
-        }
-        else {
-          console.log('Unauthorized request');
-          res.status(401)
-          .send({
-            message: 'You are unauthorized to make this request'
-          });
-        }
-      }
-    }
-  )
-}
 
-dataRouter.post ('/update', authenticateUser, (req, res) => {
+
+dataRouter.post ('/update', (req, res) => {
   let Users = server.users;
 
   Users.findOneAndUpdate(
@@ -75,7 +48,7 @@ dataRouter.post ('/update', authenticateUser, (req, res) => {
   )
 });
 
-dataRouter.post('/sessionLogin', authenticateUser, (req, res) => {
+dataRouter.post('/sessionLogin', (req, res) => {
   let Users = server.users;
 
   Users.findOne(

@@ -30,7 +30,13 @@ module.exports.dbConnection = DB_CONNECTION;
 /* Routers */
 const usersRouter = require('./routers/usersRouter.js');
 const dataRouter = require('./routers/dataRouter.js');
+
+/*Controllers*/
+const authenticationController = require('./controllers/authentication-controller');
+
 app.use('/users', usersRouter);
+//Protected routes
+app.use(authenticationController);
 app.use('/userData', dataRouter);
 
 /* Mongoose */
