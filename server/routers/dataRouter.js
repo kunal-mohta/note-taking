@@ -1,19 +1,19 @@
 /* Packages */
 const express = require('express');
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 /* External files */
-const server = require('../server.js');
+// const server = require('../server.js');
 
-const jwtPrivateKey = process.env.JWT_PVT_KEY || 'unsafe_private_key';
+const dataController = require("../controllers/dataControllers");
 
 const dataRouter = express.Router();
 
 //authentication middleware
 
 
-dataRouter.post ('/update', (req, res) => {
+/*dataRouter.post ('/update', (req, res) => {
   let Users = server.users;
 
   Users.findOneAndUpdate(
@@ -46,9 +46,13 @@ dataRouter.post ('/update', (req, res) => {
       }
     }
   )
-});
+});*/
 
-dataRouter.post('/sessionLogin', (req, res) => {
+dataRouter.post('/update', dataController.update);
+
+dataRouter.post('/sessionLogin', dataController.sessionLogin);
+
+/*dataRouter.post('/sessionLogin', (req, res) => {
   let Users = server.users;
 
   Users.findOne(
@@ -80,6 +84,6 @@ dataRouter.post('/sessionLogin', (req, res) => {
       }
     }
   )
-});
+});*/
 
 module.exports = dataRouter;
