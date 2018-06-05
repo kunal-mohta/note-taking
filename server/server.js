@@ -10,13 +10,6 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// app.use(function (req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
-//   res.header("Access-Control-Allow-Headers", "Cache-Control, Origin, X-Requested-With, Content-Type, Accept, Authorization, Pragma");
-//   next();
-// });
-
 app.use(cors());
 
 /* Global Variables */
@@ -30,7 +23,14 @@ module.exports.dbConnection = DB_CONNECTION;
 /* Routers */
 const usersRouter = require('./routers/usersRouter.js');
 const dataRouter = require('./routers/dataRouter.js');
+
+/*Controllers*/
+const authenticationController = require('./controllers/authentication-controller');
+
 app.use('/users', usersRouter);
+//Protected routes
+
+app.use(authenticationController);
 app.use('/userData', dataRouter);
 
 /* Mongoose */
@@ -54,26 +54,6 @@ db.once('open', () => {
   DB_CONNECTION = 1;
   module.exports.dbConnection = DB_CONNECTION;
 
-  //User Schema
-  const userSchema = new mongoose.Schema({
-    username: String,
-    password: String,
-    userData: {
-      username: String,
-      notes: [{
-        title: String,
-        content: String,
-        labels: [String],
-        color: String
-      }]
-    }
-  });
-
-  //User Model
-  const User = mongoose.model('User', userSchema);
-
-  //Exporting the model
-  module.exports.users = User;
 });
 
 
