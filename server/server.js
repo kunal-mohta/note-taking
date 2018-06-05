@@ -54,26 +54,6 @@ db.once('open', () => {
   DB_CONNECTION = 1;
   module.exports.dbConnection = DB_CONNECTION;
 
-  //User Schema
-  const userSchema = new mongoose.Schema({
-    username: String,
-    password: String,
-    userData: {
-      username: String,
-      notes: [{
-        title: String,
-        content: String,
-        labels: [String],
-        color: String
-      }]
-    }
-  });
-
-  //User Model
-  const User = mongoose.model('User', userSchema);
-
-  //Exporting the model
-  module.exports.users = User;
 });
 
 

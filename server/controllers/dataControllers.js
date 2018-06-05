@@ -1,8 +1,8 @@
-const server = require('../server');
+const Users = require('../models/user');
+
 require('dotenv').config();
 
 module.exports.update = (req, res) => {
-    let Users = server.users;
   
     Users.findOneAndUpdate(
       {
@@ -37,7 +37,6 @@ module.exports.update = (req, res) => {
   }
 
 module.exports.sessionLogin = (req, res) => {
-    let Users = server.users;
   
     Users.findOne(
       {
