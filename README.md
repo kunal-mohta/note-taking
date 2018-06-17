@@ -2,6 +2,8 @@
 
 Note Taking app made with [React](https://reactjs.org/) and [ExpressJS](http://expressjs.com/)
 
+![ss1](https://raw.githubusercontent.com/kunal-mohta/note-taking/master/screenshots/ss1.png)
+
 ## How to use
 
 ### Clone the repository
