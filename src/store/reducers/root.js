@@ -1,4 +1,9 @@
-const initialState = {
+import { combineReducers } from "redux";
+import { loginReducer } from './login';
+import { userReducer } from './user';
+import { noteReducer } from './note';
+
+export const initialState = {
   isLogin: true,
   activeUserData: {
     username: '',
@@ -6,10 +11,8 @@ const initialState = {
   }
 }
 
-export const rootReducer = (state = initialState, action) => {
-  switch (action.type) {
-    default : return {
-      ...state
-    }
-  }
-}
+export const rootReducer = combineReducers({
+  loginReducer,
+  userReducer,
+  noteReducer
+});

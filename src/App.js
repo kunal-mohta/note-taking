@@ -14,7 +14,7 @@ class App extends Component {
       <Router>
         <div className = 'App'>
           <Switch>
-            <PrivateRoute exact path = '/dashboard' component = { Dashboard } />
+            <PrivateRoute exact path = '/dashboard' component = { Dashboard } isLogin = {this.props.isLogin} />
             <Route path = '/login' component = { LoginPage } />
             <Route path = '/signup' component = { SignUpPage } />
             <Route path = '/' component = { DefaultLink } />
@@ -39,7 +39,7 @@ class DefaultLink extends Component {
 }
 
 const mapStateToProps = (state) =>({
-  isLogin: state.isLogin
+  isLogin: state.loginReducer.isLogin
 });
 
 export default connect(mapStateToProps)(App);

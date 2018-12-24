@@ -15,7 +15,6 @@ class Dashboard extends Component {
     super(props);
 
     this.state = {
-      data: this.props.activeUserData,
       noteDialogVisibility: false,
       isHamOpen: false
     }
@@ -182,7 +181,7 @@ class Dashboard extends Component {
                   (data) => {
                     // activeUserData = data.userData;
                     this.props.setActiveUserData(data.userData);
-                    this.setState({ data: this.props.activeUserData });
+                    // this.setState({ data: this.props.activeUserData });
                   }
                 );
                 break;
@@ -225,7 +224,7 @@ class Dashboard extends Component {
     return (
       <div className = 'App__dashboard'>
         <div className = 'App__dashboard__header'>
-          <div className = 'App__dashboard__header__title'>{ this.state.data.username }'s Notes</div>
+          <div className = 'App__dashboard__header__title'>{ this.props.activeUserData.username }'s Notes</div>
           <SignOutButton class = 'App__dashboard__header__signOutButton' signOutFunc = { this.signOutFunction }/>
           <AddNoteButton onClickFunction = { this.openNoteDialog } class = 'App__dashboard__header__addNoteButton' />
 
@@ -246,7 +245,7 @@ class Dashboard extends Component {
 
           <div className = 'App__dashboard__maingrid__mainbody'>
             {
-              this.state.data.notes.map(
+              this.props.activeUserData.notes.map(
                 (note, index) => <Note key = { index } noteId = { index } title = { note.title } content = { note.content } color = { note.color } labels = { note.labels } addLabelFunc = { this.addLabelFunction } deleteNoteFunc = { this.deleteNoteFunction } addColorFunc = { this.addColorFunction.bind(null, index) } deleteLabelFunc = { this.deleteLabelFunction.bind(null, index) } parentContext = { this }/>
               )
             }
@@ -268,7 +267,7 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  activeUserData: state.activeUserData
+  activeUserData: state.userReducer.activeUserData
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
