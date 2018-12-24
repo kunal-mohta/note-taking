@@ -2,8 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { addNote } from '../../store/actions/actionCreators';
+import { setActiveUserData, addNote, addLabel, deleteLabel, deleteNote, addColor } from '../../store/actions/actionCreators';
 import { DEFAULT_NOTE_COLOR, BASEURL } from '../../constants';
+
+import SignOutButton from './SignOutButton';
+import AddNoteButton from './AddNoteButton';
+import Note from './Note';
+import AddNoteDialog from './AddNoteDialog';
 
 class Dashboard extends Component {
   constructor (props) {
@@ -77,7 +82,8 @@ class Dashboard extends Component {
   }
 
   deleteLabelFunction (noteIndex, labelIndex) {
-    activeUserData.notes[noteIndex].labels.splice(labelIndex, 1);
+    this.props.deleteLabel(noteIndex, labelIndex);
+    // activeUserData.notes[noteIndex].labels.splice(labelIndex, 1);
     this.updateState();
   }
 
@@ -85,12 +91,14 @@ class Dashboard extends Component {
   // }
 
   deleteNoteFunction (index) {
-    activeUserData.notes.splice(index, 1);
+    this.props.deleteNode(index);
+    // activeUserData.notes.splice(index, 1);
     this.updateState();
   }
 
   addColorFunction (noteIndex, color) {
-    activeUserData.notes[noteIndex].color = color;
+    // activeUserData.notes[noteIndex].color = color;
+    this.props.addColor(noteIndex, color);
     this.updateState();
   }
 
@@ -114,7 +122,7 @@ class Dashboard extends Component {
         },
         body: JSON.stringify({
           jwt: localStorage.getItem('jwt'),
-          userData: activeUserData
+          userData: this.props.activeUserData
         })
       }
     )
@@ -122,7 +130,7 @@ class Dashboard extends Component {
       (response) => {
         switch (response.status) {
           case 200:
-            this.setState({ data: activeUserData });
+            this.setState({ data: this.props.activeUserData });
             break;
           
           case 401:
@@ -172,8 +180,9 @@ class Dashboard extends Component {
                 response.json()
                 .then(
                   (data) => {
-                    activeUserData = data.userData;
-                    this.setState({ data: activeUserData });
+                    // activeUserData = data.userData;
+                    this.props.setActiveUserData(data.userData);
+                    this.setState({ data: this.props.activeUserData });
                   }
                 );
                 break;
@@ -263,8 +272,12 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
+  setActiveUserData,
   addNote,
-  addLabel
+  addLabel,
+  deleteLabel,
+  deleteNote,
+  addColor
 },
 dispatch);
 

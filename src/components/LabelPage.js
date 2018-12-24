@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import NoteOptionPages from './NoteOptionPages';
+
 export default class LabelPage extends Component {
   constructor (props) {
     super(props);

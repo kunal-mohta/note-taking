@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+import LabelPage from '../LabelPage';
+import ColorPage from '../ColorPage';
+
 export default class Note extends Component {
   constructor (props) {
     super(props);
