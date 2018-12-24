@@ -1,18 +1,16 @@
 import { combineReducers } from "redux";
 import { loginReducer } from './login';
 import { userReducer } from './user';
-import { noteReducer } from './note';
+import { notesReducer } from './notes';
 
 export const initialState = {
   isLogin: true,
-  activeUserData: {
-    username: '',
-    notes: []
-  }
+  username: '',
+  notes: []
 }
 
 export const rootReducer = combineReducers({
   loginReducer,
   userReducer,
-  noteReducer
+  notesReducer
 });

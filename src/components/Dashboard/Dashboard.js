@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { setActiveUserData, addNote, addLabel, deleteLabel, deleteNote, addColor } from '../../store/actions/actionCreators';
+import { setUsername, setNotes, addNote, addLabel, deleteLabel, deleteNote, addColor } from '../../store/actions/actionCreators';
 import { DEFAULT_NOTE_COLOR, BASEURL } from '../../constants';
 
 import SignOutButton from './SignOutButton';
@@ -75,14 +75,12 @@ class Dashboard extends Component {
 
   addLabelFunction (closeLabelPage, noteIndex, label) {
     this.props.addLabel(noteIndex, label);
-    // activeUserData.notes[noteIndex].labels.push(label);
     this.updateState();
     closeLabelPage();
   }
 
   deleteLabelFunction (noteIndex, labelIndex) {
     this.props.deleteLabel(noteIndex, labelIndex);
-    // activeUserData.notes[noteIndex].labels.splice(labelIndex, 1);
     this.updateState();
   }
 
@@ -90,7 +88,7 @@ class Dashboard extends Component {
   // }
 
   deleteNoteFunction (index) {
-    this.props.deleteNode(index);
+    this.props.deleteNote(index);
     // activeUserData.notes.splice(index, 1);
     this.updateState();
   }
@@ -121,7 +119,10 @@ class Dashboard extends Component {
         },
         body: JSON.stringify({
           jwt: localStorage.getItem('jwt'),
-          userData: this.props.activeUserData
+          userData: {
+            username: this.props.username,
+            notes: this.props.notes
+          }
         })
       }
     )
@@ -129,9 +130,14 @@ class Dashboard extends Component {
       (response) => {
         switch (response.status) {
           case 200:
-            this.setState({ data: this.props.activeUserData });
+            // this.setState({
+            //   data: {
+            //     username: this.props.username,
+            //     notes: this.props.notes
+            //   }
+            // });
             break;
-          
+
           case 401:
             response.json()
             .then(
@@ -179,9 +185,8 @@ class Dashboard extends Component {
                 response.json()
                 .then(
                   (data) => {
-                    // activeUserData = data.userData;
-                    this.props.setActiveUserData(data.userData);
-                    // this.setState({ data: this.props.activeUserData });
+                    this.props.setUsername(data.userData.username);
+                    this.props.setNotes(data.userData.notes);
                   }
                 );
                 break;
@@ -224,7 +229,7 @@ class Dashboard extends Component {
     return (
       <div className = 'App__dashboard'>
         <div className = 'App__dashboard__header'>
-          <div className = 'App__dashboard__header__title'>{ this.props.activeUserData.username }'s Notes</div>
+          <div className = 'App__dashboard__header__title'>{ this.props.username }'s Notes</div>
           <SignOutButton class = 'App__dashboard__header__signOutButton' signOutFunc = { this.signOutFunction }/>
           <AddNoteButton onClickFunction = { this.openNoteDialog } class = 'App__dashboard__header__addNoteButton' />
 
@@ -245,7 +250,7 @@ class Dashboard extends Component {
 
           <div className = 'App__dashboard__maingrid__mainbody'>
             {
-              this.props.activeUserData.notes.map(
+              this.props.notes.map(
                 (note, index) => <Note key = { index } noteId = { index } title = { note.title } content = { note.content } color = { note.color } labels = { note.labels } addLabelFunc = { this.addLabelFunction } deleteNoteFunc = { this.deleteNoteFunction } addColorFunc = { this.addColorFunction.bind(null, index) } deleteLabelFunc = { this.deleteLabelFunction.bind(null, index) } parentContext = { this }/>
               )
             }
@@ -267,15 +272,17 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  activeUserData: state.userReducer.activeUserData
+  username: state.userReducer.username,
+  notes: state.notesReducer.notes
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
-  setActiveUserData,
+  setUsername,
+  setNotes,
   addNote,
+  deleteNote,
   addLabel,
   deleteLabel,
-  deleteNote,
   addColor
 },
 dispatch);

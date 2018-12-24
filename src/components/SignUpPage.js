@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import UsersPage from './UsersPage';
 
-import { loginTrue, setActiveUserData } from '../store/actions/actionCreators';
+import { loginTrue, setUsername, setNotes } from '../store/actions/actionCreators';
 
 const BASEURL = '';
 
@@ -54,10 +54,12 @@ class SignUpPage extends Component {
               (data) => {
                 localStorage.setItem('jwt', data.jwt);
                 this.props.loginTrue();
-                this.props.setActiveUserData({
-                  username: this.state.user.username,
-                  notes: []
-                });
+                // this.props.setActiveUserData({
+                //   username: this.state.user.username,
+                //   notes: []
+                // });
+                this.props.setUsername(this.state.user.username);
+                this.props.setNotes([]);
                 this.props.history.push('/dashboard');
               }
             );
@@ -100,7 +102,8 @@ class SignUpPage extends Component {
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   loginTrue,
-  setActiveUserData
+  setUsername,
+  setNotes
 },
 dispatch);
 

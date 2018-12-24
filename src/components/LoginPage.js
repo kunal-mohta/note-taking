@@ -5,7 +5,7 @@ import UsersPage from './UsersPage';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { loginTrue, setActiveUserData } from '../store/actions/actionCreators';
+import { loginTrue, setUsername, setNotes } from '../store/actions/actionCreators';
 
 const BASEURL = '';
 
@@ -55,7 +55,9 @@ class LoginPage extends Component {
               (data) => {
                 localStorage.setItem('jwt', data.jwt);
                 this.props.loginTrue();
-                this.props.setActiveUserData(data.userData);
+                // this.props.setActiveUserData(data.userData);
+                this.props.setUsername(data.userData.username);
+                this.props.setNotes(data.userData.notes);
                 this.props.history.push('/dashboard');
               }
             );
@@ -104,7 +106,8 @@ class LoginPage extends Component {
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   loginTrue,
-  setActiveUserData
+  setUsername,
+  setNotes
 },
 dispatch);
 
