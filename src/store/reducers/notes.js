@@ -1,5 +1,5 @@
 import { initialState } from "./root";
-import { ADD_LABEL, ADD_NOTE, DELETE_LABEL, DELETE_NOTE, SET_NOTES } from "../actions/actionTypes";
+import { ADD_LABEL, ADD_NOTE, DELETE_LABEL, DELETE_NOTE, SET_NOTES, ADD_COLOR } from "../actions/actionTypes";
 
 export const notesReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -24,22 +24,45 @@ export const notesReducer = (state = initialState, action) => {
       }
     }
 
-    // case ADD_LABEL: {
-    //   stateNotes[action.noteIndex].labels.push(action.label);
-    //   return {
-    //     ...state,
-    //     notes: stateNotes
-    //   };
-    // }
+    case ADD_LABEL: {
+      let notes = [...state.notes];
+      let note = {...notes[action.noteIndex]};
+      let labels = [...note.labels];
+      labels.push(action.label);
+      note.labels = labels;
+      notes[action.noteIndex] = note;
 
-    // case DELETE_LABEL: {
-    //   stateNotes[action.noteIndex].labels.splice(action.labelIndex, 1);
-    //   return {
-    //     ...state,
-    //     notes: stateNotes
-    //   }
-    // }
+      return {
+        ...state,
+        notes
+      }
+    }
 
+    case DELETE_LABEL: {
+      let notes = [...state.notes];
+      let note = {...notes[action.noteIndex]};
+      let labels = [...note.labels];
+      labels.splice(action.labelIndex, 1);
+      note.labels = labels;
+      notes[action.noteIndex] = note;
+
+      return {
+        ...state,
+        notes
+      }
+    }
+
+    case ADD_COLOR: {
+      let notes = [...state.notes];
+      let note = {...notes[action.noteIndex]};
+      note.color = action.color;
+      notes[action.noteIndex] = note;
+
+      return {
+        ...state,
+        notes
+      }
+    }
 
     default: return state;
   }

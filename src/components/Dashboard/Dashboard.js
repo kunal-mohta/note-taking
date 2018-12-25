@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { setUsername, setNotes, addNote, addLabel, deleteLabel, deleteNote, addColor } from '../../store/actions/actionCreators';
+import { setUsername, setNotes, addNote, addLabel, deleteLabel, deleteNote, addColor, updateBackend } from '../../store/actions/actionCreators';
 import { DEFAULT_NOTE_COLOR, BASEURL } from '../../constants';
 
 import SignOutButton from './SignOutButton';
@@ -23,7 +23,6 @@ class Dashboard extends Component {
     this.exitDialog = this.exitDialog.bind(this);
     this.openHam = this.openHam.bind(this);
     this.closeHam = this.closeHam.bind(this);
-    this.updateState = this.updateState.bind(this);
     this.addColorFunction = this.addColorFunction.bind(this);
     this.addLabelFunction = this.addLabelFunction.bind(this);
     this.deleteLabelFunction = this.deleteLabelFunction.bind(this);
@@ -68,20 +67,20 @@ class Dashboard extends Component {
       updated: ''
     }
     this.props.addNote(newNote);
-    this.updateState();
+    this.props.updateBackend();
     clearDialogData();
     this.exitDialog();
   }
 
   addLabelFunction (closeLabelPage, noteIndex, label) {
     this.props.addLabel(noteIndex, label);
-    this.updateState();
+    this.props.updateBackend();
     closeLabelPage();
   }
 
   deleteLabelFunction (noteIndex, labelIndex) {
     this.props.deleteLabel(noteIndex, labelIndex);
-    this.updateState();
+    this.props.updateBackend();
   }
 
   // archiveNoteFunction (index) {
@@ -90,13 +89,13 @@ class Dashboard extends Component {
   deleteNoteFunction (index) {
     this.props.deleteNote(index);
     // activeUserData.notes.splice(index, 1);
-    this.updateState();
+    this.props.updateBackend();
   }
 
   addColorFunction (noteIndex, color) {
     // activeUserData.notes[noteIndex].color = color;
     this.props.addColor(noteIndex, color);
-    this.updateState();
+    this.props.updateBackend();
   }
 
   sortByFunction () {
@@ -109,58 +108,7 @@ class Dashboard extends Component {
   }
 
   updateState () {
-    fetch(
-      BASEURL + '/userData/update',
-      {
-        method: 'post',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          jwt: localStorage.getItem('jwt'),
-          userData: {
-            username: this.props.username,
-            notes: this.props.notes
-          }
-        })
-      }
-    )
-    .then(
-      (response) => {
-        switch (response.status) {
-          case 200:
-            // this.setState({
-            //   data: {
-            //     username: this.props.username,
-            //     notes: this.props.notes
-            //   }
-            // });
-            break;
-
-          case 401:
-            response.json()
-            .then(
-              (data) => {
-                alert(data.message);
-              }
-            )
-            break;
-          
-          case 500:
-            response.json()
-            .then(
-              (data) => {
-                alert(data.message);
-              }
-            )
-            break;
-
-          default:
-            alert('Undhandled error. Contact dev or please try logging in again');
-        }
-      }
-    );
+    this.props.updateBackend();
   }
 
   windowReload () {
@@ -283,7 +231,8 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   deleteNote,
   addLabel,
   deleteLabel,
-  addColor
+  addColor,
+  updateBackend
 },
 dispatch);
 
