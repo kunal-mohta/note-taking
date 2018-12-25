@@ -7,3 +7,4 @@ export const DELETE_NOTE = 'DELETE_NOTE';
 export const ADD_LABEL = 'ADD_LABEL';
 export const DELETE_LABEL = 'DELETE_LABEL';
 export const ADD_COLOR = 'ADD_COLOR';
+export const CLEAR_NOTE_DIALOG = 'CLEAR_NOTE_DIALOG';

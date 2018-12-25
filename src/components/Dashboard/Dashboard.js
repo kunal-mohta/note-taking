@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { setUsername, setNotes, addNote, addLabel, deleteLabel, deleteNote, addColor, updateBackend } from '../../store/actions/actionCreators';
-import { DEFAULT_NOTE_COLOR, BASEURL } from '../../constants';
+import { BASEURL } from '../../constants';
 
 import SignOutButton from './SignOutButton';
 import AddNoteButton from './AddNoteButton';
@@ -58,15 +58,7 @@ class Dashboard extends Component {
   }
 
   addNoteFunction (newNoteData, clearDialogData) {
-    let newNote = {
-      title: newNoteData.title,
-      content: newNoteData.content,
-      labels: [],
-      color: DEFAULT_NOTE_COLOR,
-      created: '',
-      updated: ''
-    }
-    this.props.addNote(newNote);
+    this.props.addNote(newNoteData);
     this.props.updateBackend();
     clearDialogData();
     this.exitDialog();
@@ -88,12 +80,10 @@ class Dashboard extends Component {
 
   deleteNoteFunction (index) {
     this.props.deleteNote(index);
-    // activeUserData.notes.splice(index, 1);
     this.props.updateBackend();
   }
 
   addColorFunction (noteIndex, color) {
-    // activeUserData.notes[noteIndex].color = color;
     this.props.addColor(noteIndex, color);
     this.props.updateBackend();
   }

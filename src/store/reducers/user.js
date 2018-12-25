@@ -1,6 +1,9 @@
-import { initialState } from './root';
-
 import { SET_USERNAME } from "../actions/actionTypes";
+
+const initialState = {
+  username: ''
+}
+
 
 export const userReducer = (state = initialState, action) => {
   switch (action.type) {

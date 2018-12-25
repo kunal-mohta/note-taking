@@ -1,5 +1,8 @@
-import { initialState } from "./root";
 import { ADD_LABEL, ADD_NOTE, DELETE_LABEL, DELETE_NOTE, SET_NOTES, ADD_COLOR } from "../actions/actionTypes";
+
+const initialState = {
+  notes: []
+}
 
 export const notesReducer = (state = initialState, action) => {
   switch (action.type) {
