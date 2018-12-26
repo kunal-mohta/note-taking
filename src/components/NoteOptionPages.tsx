@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 
-export default class NoteOptionPages extends Component {
-  constructor (props) {
+interface Props {
+  closeFunc: () => void,
+  isOpen: boolean
+}
+
+export default class NoteOptionPages extends Component<Props> {
+  constructor (props: Props) {
     super(props);
     this.state = {
       openStyle: { display: 'block' },

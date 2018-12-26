@@ -10,7 +10,7 @@ import AddNoteButton from './AddNoteButton';
 import Note from './Note';
 import AddNoteDialog from './AddNoteDialog';
 
-class Dashboard extends Component {
+class Dashboard extends Component<{}, { noteDialogVisibility: boolean }> {
   constructor (props) {
     super(props);
 
@@ -83,7 +83,7 @@ class Dashboard extends Component {
     this.props.updateBackend();
   }
 
-  addColorFunction (noteIndex, color) {
+  addColorFunction (noteIndex: number, color: string) {
     this.props.addColor(noteIndex, color);
     this.props.updateBackend();
   }

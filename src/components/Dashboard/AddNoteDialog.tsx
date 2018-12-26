@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 
-export default class AddNoteDialog extends Component {
-  constructor (props) {
+interface Props {
+  visible: boolean,
+  // addNoteFunc: (newNoteData: )
+}
+
+export default class AddNoteDialog extends Component<Props> {
+  constructor (props: Props) {
     super(props);
 
     this.state = {

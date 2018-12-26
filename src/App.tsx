@@ -8,7 +8,7 @@ import SignUpPage from './components/SignUpPage';
 
 import { connect } from 'react-redux';
 
-class App extends Component {
+class App extends Component<{isLogin: boolean}> {
   render () {
     return (
       <Router>
@@ -25,7 +25,7 @@ class App extends Component {
   }
 }
 
-class PrivateRoute extends Component {
+class PrivateRoute extends Component<{exact: boolean, path: string, component: typeof Dashboard, isLogin: boolean}, object> {
   render () {
     if (this.props.isLogin) return <Route path = { this.props.path } component = { this.props.component }/>
     else return <Redirect to = { {pathname: '/login'} } />
@@ -38,7 +38,7 @@ class DefaultLink extends Component {
   }
 }
 
-const mapStateToProps = (state) =>({
+const mapStateToProps = (state: {loginReducer: {isLogin: boolean }}) =>({
   isLogin: state.loginReducer.isLogin
 });
 
