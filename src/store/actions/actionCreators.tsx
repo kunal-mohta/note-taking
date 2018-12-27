@@ -3,14 +3,26 @@ import { BASEURL } from '../../constants';
 
 // notes actions
 import { setNotes, addNote, deleteNote, addLabel, deleteLabel, addColor } from './creators/notes';
+import { Dispatch } from 'redux';
+import { StoreState } from 'src/types';
 export { setNotes, addNote, deleteNote, addLabel, deleteLabel, addColor };
 
-export const loginTrue = () => ({ type: LOGIN_TRUE })
-// export const setActiveUserData = (newData) => ({ type: SET_ACTIVE_USER_DATA, newData })
-export const setUsername = (username) => ({ type: SET_USERNAME, username });
+export interface LoginTrueAction {
+  type: LOGIN_TRUE
+}
+
+export const loginTrue = (): LoginTrueAction => ({ type: LOGIN_TRUE })
+
+
+export interface SetUsernameAction {
+  type: SET_USERNAME,
+  username: string
+}
+
+export const setUsername = (username: string) => ({ type: SET_USERNAME, username });
 
 export const updateBackend = () => {
-  return (dispatch, getState) => {
+  return (dispatch: Dispatch, getState: () => StoreState) => {
     fetch(
       BASEURL + '/userData/update',
       {
@@ -32,12 +44,6 @@ export const updateBackend = () => {
       (response) => {
         switch (response.status) {
           case 200:
-            // this.setState({
-            //   data: {
-            //     username: this.props.username,
-            //     notes: this.props.notes
-            //   }
-            // });
             break;
 
           case 401:

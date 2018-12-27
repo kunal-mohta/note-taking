@@ -1,11 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component, ChangeEvent } from 'react';
+import Dashboard from '../Dashboard/Dashboard';
+import { NoteType } from 'src/types/index';
 
 interface Props {
   visible: boolean,
-  // addNoteFunc: (newNoteData: )
+  exitDialogFunc: () => void
+  addNoteFunc: (newNoteData: NoteType, clearDialogData: () => void) => void,
+  parentContext: typeof Dashboard
 }
 
-export default class AddNoteDialog extends Component<Props> {
+export default class AddNoteDialog extends Component<Props, { noteData: { title: string, content: string, [key: string]: string }, visible: boolean }> {
   constructor (props: Props) {
     super(props);
 
@@ -18,9 +22,9 @@ export default class AddNoteDialog extends Component<Props> {
     }
   }
 
-  handleInputChange (property, event) {
+  handleInputChange (property: string, event: ChangeEvent) {
     let noteData = this.state.noteData;
-    noteData[property] = event.target.value;
+    noteData[property] = (event.target as HTMLInputElement).value;
     this.setState({ noteData: noteData });
   }
 

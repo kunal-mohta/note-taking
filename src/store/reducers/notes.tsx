@@ -1,10 +1,14 @@
 import { ADD_LABEL, ADD_NOTE, DELETE_LABEL, DELETE_NOTE, SET_NOTES, ADD_COLOR } from "../actions/actionTypes";
+import { NotesReducerState } from "src/types";
+import { SetNotesAction, AddNoteAction, AddLabelAction, DeleteNoteAction, DeleteLabelAction, AddColorAction } from "../actions/creators/notes";
 
-const initialState = {
+const initialState: NotesReducerState = {
   notes: []
 }
 
-export const notesReducer = (state = initialState, action) => {
+type NotesAction = SetNotesAction | AddNoteAction | DeleteNoteAction |  AddLabelAction | DeleteLabelAction | AddColorAction;
+
+export const notesReducer = (state: NotesReducerState = initialState, action: NotesAction) => {
   switch (action.type) {
     case SET_NOTES: {
       return {

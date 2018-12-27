@@ -2,9 +2,23 @@ import React, { Component } from 'react';
 
 import LabelPage from '../LabelPage';
 import ColorPage from '../ColorPage';
+import Dashboard from './Dashboard';
 
-export default class Note extends Component<{}, {isLabelPage: boolean, isColorPage: boolean }> {
-  constructor (props) {
+interface Props {
+  noteId: number,
+  title: string,
+  content: string,
+  color: string | undefined,
+  labels: string[] | undefined,
+  addLabelFunc: (closeLabelPage: () => void, noteIndex: number, label: string) => void,
+  deleteNoteFunc: (index: number) => void,
+  addColorFunc: (noteIndex: number, color: string) => void,
+  deleteLabelFunc: (noteIndex: number, labelIndex: number) => void,
+  parentContext: typeof Dashboard
+}
+
+export default class Note extends Component<Props, {isLabelPage: boolean, isColorPage: boolean }> {
+  constructor (props: Props) {
     super(props);
 
     this.state = {

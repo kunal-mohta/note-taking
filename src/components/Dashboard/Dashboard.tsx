@@ -1,17 +1,39 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators, Dispatch } from 'redux';
 
-import { setUsername, setNotes, addNote, addLabel, deleteLabel, deleteNote, addColor, updateBackend } from '../../store/actions/actionCreators';
+import { setUsername, setNotes, addNote, addLabel, deleteLabel, deleteNote, addColor, updateBackend, SetUsernameAction } from '../../store/actions/actionCreators';
 import { BASEURL } from '../../constants';
 
 import SignOutButton from './SignOutButton';
 import AddNoteButton from './AddNoteButton';
 import Note from './Note';
 import AddNoteDialog from './AddNoteDialog';
+import { NoteType, StoreState, ThunkActionReturn } from 'src/types';
+import { AddLabelAction, DeleteLabelAction, DeleteNoteAction, AddColorAction, SetNotesAction } from 'src/store/actions/creators/notes';
+import { History } from 'history';
 
-class Dashboard extends Component<{}, { noteDialogVisibility: boolean }> {
-  constructor (props) {
+interface Props {
+  // actions from redux
+  addNote: (newNoteDate: NoteType) => ThunkActionReturn,
+  updateBackend: () => ThunkActionReturn,
+  addLabel: (noteIndex: number, label: string) => AddLabelAction,
+  deleteLabel: (noteIndex: number, labelIndex: number) => DeleteLabelAction,
+  deleteNote: (index: number) => DeleteNoteAction,
+  addColor: (noteIndex: number, color: string) => AddColorAction,
+  setUsername: (username: string) => SetUsernameAction,
+  setNotes: (notes: NoteType[]) => SetNotesAction,
+
+  // state as props from redux
+  username: string,
+  notes: NoteType[]
+
+  // react router
+  history: History,
+}
+
+class Dashboard extends Component<Props, { noteDialogVisibility: boolean, isHamOpen: boolean }> {
+  constructor (props: Props) {
     super(props);
 
     this.state = {
@@ -29,8 +51,8 @@ class Dashboard extends Component<{}, { noteDialogVisibility: boolean }> {
     this.signOutFunction = this.signOutFunction.bind(this);
 
     //clicking anywhere outside note dialog should close the note dialog
-    document.getElementsByTagName('body')[0].addEventListener('click', (e) => {
-      let isInsideDialog = ( e.target.parentElement.className === 'App__dashboard__addNoteDialog' || e.target.className === 'App__dashboard__addNoteDialog' );
+    document.getElementsByTagName('body')[0].addEventListener('click', (e: MouseEvent) => {
+      let isInsideDialog = ( (e.target as HTMLElement).parentElement!.className === 'App__dashboard__addNoteDialog' || (e.target as HTMLElement).className === 'App__dashboard__addNoteDialog' );
 
       if (isInsideDialog) { }
       else {
@@ -57,20 +79,20 @@ class Dashboard extends Component<{}, { noteDialogVisibility: boolean }> {
     this.setState({ isHamOpen: false });
   }
 
-  addNoteFunction (newNoteData, clearDialogData) {
+  addNoteFunction (newNoteData: NoteType, clearDialogData: () => void) {
     this.props.addNote(newNoteData);
     this.props.updateBackend();
     clearDialogData();
     this.exitDialog();
   }
 
-  addLabelFunction (closeLabelPage, noteIndex, label) {
+  addLabelFunction (closeLabelPage: () => void, noteIndex: number, label: string) {
     this.props.addLabel(noteIndex, label);
     this.props.updateBackend();
     closeLabelPage();
   }
 
-  deleteLabelFunction (noteIndex, labelIndex) {
+  deleteLabelFunction (noteIndex: number, labelIndex: number) {
     this.props.deleteLabel(noteIndex, labelIndex);
     this.props.updateBackend();
   }
@@ -78,7 +100,7 @@ class Dashboard extends Component<{}, { noteDialogVisibility: boolean }> {
   // archiveNoteFunction (index) {
   // }
 
-  deleteNoteFunction (index) {
+  deleteNoteFunction (index: number) {
     this.props.deleteNote(index);
     this.props.updateBackend();
   }
@@ -93,7 +115,7 @@ class Dashboard extends Component<{}, { noteDialogVisibility: boolean }> {
   }
 
   signOutFunction () {
-    localStorage.setItem('jwt', false);
+    localStorage.setItem('jwt', 'false');
     this.props.history.push('/login');
   }
 
@@ -187,9 +209,10 @@ class Dashboard extends Component<{}, { noteDialogVisibility: boolean }> {
           </div>
 
           <div className = 'App__dashboard__maingrid__mainbody'>
+            {/*  */}
             {
               this.props.notes.map(
-                (note, index) => <Note key = { index } noteId = { index } title = { note.title } content = { note.content } color = { note.color } labels = { note.labels } addLabelFunc = { this.addLabelFunction } deleteNoteFunc = { this.deleteNoteFunction } addColorFunc = { this.addColorFunction.bind(null, index) } deleteLabelFunc = { this.deleteLabelFunction.bind(null, index) } parentContext = { this }/>
+                (note, index) => <Note key = { index } noteId = { index } title = { note.title } content = { note.content } color = { note.color } labels = { note.labels } addLabelFunc = { this.addLabelFunction } deleteNoteFunc = { this.deleteNoteFunction } addColorFunc = { this.addColorFunction.bind(null, index, 'asdf') } deleteLabelFunc = { this.deleteLabelFunction.bind(null, index) } parentContext = { this }/>
               )
             }
           </div>
@@ -209,12 +232,12 @@ class Dashboard extends Component<{}, { noteDialogVisibility: boolean }> {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: StoreState) => ({
   username: state.userReducer.username,
   notes: state.notesReducer.notes
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
   setUsername,
   setNotes,
   addNote,
