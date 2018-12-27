@@ -14,7 +14,7 @@ interface Props {
   deleteNoteFunc: (index: number) => void,
   addColorFunc: (noteIndex: number, color: string) => void,
   deleteLabelFunc: (noteIndex: number, labelIndex: number) => void,
-  parentContext: typeof Dashboard
+  parentContext: any // TODO: find something for this
 }
 
 export default class Note extends Component<Props, {isLabelPage: boolean, isColorPage: boolean }> {
@@ -56,8 +56,11 @@ export default class Note extends Component<Props, {isLabelPage: boolean, isColo
         <div className = 'note__body'>{ this.props.content }</div>
         <div className = 'note__labelSection'>
           {
+            this.props.labels
+            &&
+            // TODO: fix noteindex parameter in deleteLabelFunc
             this.props.labels.map(
-              (label, index) => <div key = { index } className = 'note__labelSection__label' style = { {background: this.props.color} } title = 'Remove Label' onClick = { this.props.deleteLabelFunc.bind(null, index) }>{ label }</div>
+              (label, index) => <div key = { index } className = 'note__labelSection__label' style = { {background: this.props.color} } title = 'Remove Label' onClick = { this.props.deleteLabelFunc.bind(null, 1, index) }>{ label }</div>
             )
           }
         </div>
@@ -69,7 +72,8 @@ export default class Note extends Component<Props, {isLabelPage: boolean, isColo
           <div className = 'note__operations__delete' title = 'Delete Note' onClick = { this.props.deleteNoteFunc.bind(this.props.parentContext, this.props.noteId) }></div>
         </div>
 
-        <LabelPage isOpen = { this.state.isLabelPage } closeFunc = { this.closeLabelPage } addLabelFunc = { this.props.addLabelFunc.bind(null, this.closeLabelPage) } noteId = { this.props.noteId } color = { this.props.color }/>
+        {/* TODO: fix -1 and '' */}
+        <LabelPage isOpen = { this.state.isLabelPage } closeFunc = { this.closeLabelPage } addLabelFunc = { this.props.addLabelFunc.bind(null, this.closeLabelPage, -1, '') } noteId = { this.props.noteId } color = { this.props.color }/>
         <ColorPage isOpen = { this.state.isColorPage } closeFunc = { this.closeColorPage } addColorFunc = { this.props.addColorFunc } color = { this.props.color }/>
       </div>
     );

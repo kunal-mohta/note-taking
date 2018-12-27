@@ -9,6 +9,12 @@ import thunk from 'redux-thunk';
 import { rootReducer } from './store/reducers/root';
 import { StoreState } from './types';
 
+declare global {
+  interface Window {
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: any;
+  }
+}
+
 // for redux devtools
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore<StoreState, any, any, any>(rootReducer, composeEnhancers(applyMiddleware(thunk)));

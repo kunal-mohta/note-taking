@@ -34,7 +34,7 @@ export const notesReducer = (state: NotesReducerState = initialState, action: No
     case ADD_LABEL: {
       let notes = [...state.notes];
       let note = {...notes[action.noteIndex]};
-      let labels = [...note.labels];
+      let labels = (note.labels) ? [...note.labels] : [];
       labels.push(action.label);
       note.labels = labels;
       notes[action.noteIndex] = note;
@@ -48,7 +48,7 @@ export const notesReducer = (state: NotesReducerState = initialState, action: No
     case DELETE_LABEL: {
       let notes = [...state.notes];
       let note = {...notes[action.noteIndex]};
-      let labels = [...note.labels];
+      let labels = (note.labels) ? [...note.labels] : [];      
       labels.splice(action.labelIndex, 1);
       note.labels = labels;
       notes[action.noteIndex] = note;

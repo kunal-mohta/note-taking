@@ -6,7 +6,7 @@ interface Props {
   visible: boolean,
   exitDialogFunc: () => void
   addNoteFunc: (newNoteData: NoteType, clearDialogData: () => void) => void,
-  parentContext: typeof Dashboard
+  parentContext: any // TODO: find something for this
 }
 
 export default class AddNoteDialog extends Component<Props, { noteData: { title: string, content: string, [key: string]: string }, visible: boolean }> {

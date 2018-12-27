@@ -4,8 +4,8 @@ import NoteOptionPages from './NoteOptionPages';
 
 interface Props {
   closeFunc: () => void,
-  color: string,
   addColorFunc: (noteIndex: number, color: string) => void,
+  color: string | undefined,
   isOpen: boolean
 }
 
@@ -20,7 +20,7 @@ export default class ColorPage extends Component<Props, { colors: string[], sele
   }
 
   componentDidMount () {
-    this.setState({ selectedColorIndex: this.state.colors.indexOf(this.props.color) });
+    this.setState({ selectedColorIndex: this.state.colors.indexOf(this.props.color!) });
   }
 
   selectColor (color: string, index: number) {

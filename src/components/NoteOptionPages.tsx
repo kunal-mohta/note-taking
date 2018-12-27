@@ -5,7 +5,7 @@ interface Props {
   isOpen: boolean
 }
 
-export default class NoteOptionPages extends Component<Props> {
+export default class NoteOptionPages extends Component<Props, { openStyle: { display: string }, closeStyle: { display: string }}> {
   constructor (props: Props) {
     super(props);
     this.state = {

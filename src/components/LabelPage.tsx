@@ -1,9 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component, ChangeEvent } from 'react';
 
 import NoteOptionPages from './NoteOptionPages';
 
-export default class LabelPage extends Component {
-  constructor (props) {
+interface Props {
+  isOpen: boolean,
+  closeFunc: () => void,
+  addLabelFunc: (closeLabelPage: () => void, noteIndex: number, label: string) => void,
+  noteId: number,
+  color: string | undefined
+}
+
+export default class LabelPage extends Component<Props, { labelContent: string }> {
+  constructor (props: Props) {
     super(props);
 
     this.state = {
@@ -13,8 +21,8 @@ export default class LabelPage extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
   }
   
-  handleInputChange (event) {
-    this.setState({ labelContent: event.target.value });
+  handleInputChange (event: ChangeEvent) {
+    this.setState({ labelContent: (event.target as HTMLInputElement).value });
   }
 
   render () {
@@ -24,7 +32,8 @@ export default class LabelPage extends Component {
           What label do you want to add?
         </div>
         <input type = 'text' placeholder = 'Label Name' value = { this.state.labelContent } onChange = { this.handleInputChange } />
-        <div className = 'note__optionsPage__content__addButton' style = { {background:this.props.color} } onClick = { this.props.addLabelFunc.bind(null, this.props.noteId, this.state.labelContent) } >Add</div>
+        {/* TODO: fix () => {} */}
+        <div className = 'note__optionsPage__content__addButton' style = { {background:this.props.color} } onClick = { this.props.addLabelFunc.bind(null, () => {}, this.props.noteId, this.state.labelContent) } >Add</div>
 
       </NoteOptionPages>
     )

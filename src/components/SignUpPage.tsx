@@ -1,15 +1,25 @@
-import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
+import React, { Component, ChangeEvent } from 'react';
+import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 
 import UsersPage from './UsersPage';
 
-import { loginTrue, setUsername, setNotes } from '../store/actions/actionCreators';
+import { loginTrue, setUsername, setNotes, LoginTrueAction, SetUsernameAction } from '../store/actions/actionCreators';
+import { SetNotesAction } from 'src/store/actions/creators/notes';
+import { NoteType } from 'src/types';
+import { History } from 'history';
 
 const BASEURL = '';
 
-class SignUpPage extends Component {
-  constructor(props, context) {
+interface Props {
+  loginTrue: () => LoginTrueAction,
+  setUsername: (username: string) => SetUsernameAction,
+  setNotes: (notes: NoteType[]) => SetNotesAction,
+  history: History
+}
+
+class SignUpPage extends Component<Props, { user: { username: string, password: string, [key: string]: string }, errMsg: string }> {
+  constructor(props: Props) {
     super(props);
     this.signup = this.signup.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -23,9 +33,9 @@ class SignUpPage extends Component {
     }
   }
 
-  handleInputChange(property, event) {
+  handleInputChange(property: string, event: ChangeEvent) {
     let user = this.state.user;
-    user[property] = event.target.value;
+    user[property] = (event.target as HTMLInputElement).value;
     this.setState({ user: user });
   }
 
@@ -100,7 +110,7 @@ class SignUpPage extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({
   loginTrue,
   setUsername,
   setNotes

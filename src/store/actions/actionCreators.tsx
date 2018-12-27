@@ -19,7 +19,7 @@ export interface SetUsernameAction {
   username: string
 }
 
-export const setUsername = (username: string) => ({ type: SET_USERNAME, username });
+export const setUsername = (username: string): SetUsernameAction => ({ type: SET_USERNAME, username });
 
 export const updateBackend = () => {
   return (dispatch: Dispatch, getState: () => StoreState) => {

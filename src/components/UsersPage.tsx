@@ -1,8 +1,21 @@
-import React, { Component } from 'react';
+import React, { Component, ChangeEvent } from 'react';
 
 import { Link } from 'react-router-dom';
 
-export default class UsersPage extends Component {
+interface Props {
+  title: string,
+  oauthMsg: string,
+  footerMsg: string,
+  footerLink: string,
+  footerLinkMsg: string,
+  compFunc: () => void,
+  username: string,
+  password: string,
+  handleInputChange: (property: string, event: ChangeEvent) => void,
+  errMsg: string
+}
+
+export default class UsersPage extends Component<Props> {
   render () {
     return (
       <div className = 'App__usersPage'>
