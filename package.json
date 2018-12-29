@@ -35,12 +35,11 @@
     "build-css": "node-sass-chokidar src/ -o src/",
     "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
     "start-js": "react-scripts-ts start",
-    "build-js": "react-scripts build",
+    "build-js": "react-scripts-ts build",
     "start": "BROWSER=none npm-run-all -p watch-css start-js",
     "build": "npm-run-all build-css build-js",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "start-server": "node server/server.js"
-  },
-  "proxy": "http://localhost:5000"
+  }
 }

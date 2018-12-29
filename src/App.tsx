@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect, Switch, HashRouter } from 'react-router-dom';
 import './App.css';
 
 import Dashboard from './components/Dashboard/Dashboard';
@@ -11,16 +11,16 @@ import { connect } from 'react-redux';
 class App extends Component<{isLogin: boolean}> {
   render () {
     return (
-      <Router>
+      <HashRouter>
         <div className = 'App'>
           <Switch>
             <PrivateRoute exact path = '/dashboard' component = { Dashboard } isLogin = {this.props.isLogin} />
-            <Route path = '/login' component = { LoginPage } />
+            <Route exact path = '/login' component = { LoginPage } />
             <Route path = '/signup' component = { SignUpPage } />
             <Route path = '/' component = { DefaultLink } />
           </Switch>
         </div>
-      </Router>
+      </HashRouter>
     )
   }
 }

@@ -9,8 +9,7 @@ import { loginTrue, setUsername, setNotes, LoginTrueAction, SetUsernameAction } 
 import { SetNotesAction } from 'src/store/actions/creators/notes';
 import { NoteType } from 'src/types';
 import { History } from 'history';
-
-const BASEURL = '';
+import { BASEURL } from 'src/constants';
 
 interface Props {
   loginTrue: () => LoginTrueAction,
