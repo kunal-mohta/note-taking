@@ -211,10 +211,9 @@ class Dashboard extends Component<Props, { noteDialogVisibility: boolean, isHamO
           </div>
 
           <div className = 'App__dashboard__maingrid__mainbody'>
-            {/* TODO: addColorFunction 'asdf' */}
             {
               this.props.notes.map(
-                (note, index) => <Note key = { index } noteId = { index } title = { note.title } content = { note.content } color = { note.color } labels = { note.labels } addLabelFunc = { this.addLabelFunction } deleteNoteFunc = { this.deleteNoteFunction } addColorFunc = { this.addColorFunction.bind(null, index, 'asdf') } deleteLabelFunc = { this.deleteLabelFunction.bind(null, index) } parentContext = { this }/>
+                (note, index) => <Note key = { index } noteId = { index } title = { note.title } content = { note.content } color = { note.color } labels = { note.labels } addLabelFunc = { this.addLabelFunction } deleteNoteFunc = { this.deleteNoteFunction } addColorFunc = { (color) => { this.addColorFunction.call(null, index, color) } } deleteLabelFunc = { (labelIndex) => { this.deleteLabelFunction.call(null, index, labelIndex) } } parentContext = { this }/>
               )
             }
           </div>

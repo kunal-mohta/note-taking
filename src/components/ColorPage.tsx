@@ -4,7 +4,7 @@ import NoteOptionPages from './NoteOptionPages';
 
 interface Props {
   closeFunc: () => void,
-  addColorFunc: (noteIndex: number, color: string) => void,
+  addColorFunc: (color: string) => void,
   color: string | undefined,
   isOpen: boolean
 }
@@ -24,8 +24,7 @@ export default class ColorPage extends Component<Props, { colors: string[], sele
   }
 
   selectColor (color: string, index: number) {
-    // TODO: random number is used here to get rid of type error, fix this later
-    this.props.addColorFunc.bind(null, 0, color)();
+    this.props.addColorFunc.bind(null, color)();
 
     this.setState({ selectedColorIndex: index });
   }
@@ -42,7 +41,7 @@ export default class ColorPage extends Component<Props, { colors: string[], sele
               (color, index) => {
                 if (index === this.state.selectedColorIndex) {
                   return (
-                    <div key = { index } style = { {background: color, border: 'solid black 5px'} } className = 'note__optionsPage__content__colorPalette__color' onClick = { this.props.addColorFunc.bind(null, 0, color) }> {/* TODO: extra number argument here */}
+                    <div key = { index } style = { {background: color, border: 'solid black 5px'} } className = 'note__optionsPage__content__colorPalette__color' onClick = { this.props.addColorFunc.bind(null, color) }>
                     </div>
                   );
                 }

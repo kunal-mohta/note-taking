@@ -5,7 +5,7 @@ import NoteOptionPages from './NoteOptionPages';
 interface Props {
   isOpen: boolean,
   closeFunc: () => void,
-  addLabelFunc: (closeLabelPage: () => void, noteIndex: number, label: string) => void,
+  addLabelFunc: (noteIndex: number, label: string) => void,
   noteId: number,
   color: string | undefined
 }
@@ -32,8 +32,7 @@ export default class LabelPage extends Component<Props, { labelContent: string }
           What label do you want to add?
         </div>
         <input type = 'text' placeholder = 'Label Name' value = { this.state.labelContent } onChange = { this.handleInputChange } />
-        {/* TODO: fix () => {} */}
-        <div className = 'note__optionsPage__content__addButton' style = { {background:this.props.color} } onClick = { this.props.addLabelFunc.bind(null, () => {}, this.props.noteId, this.state.labelContent) } >Add</div>
+        <div className = 'note__optionsPage__content__addButton' style = { {background:this.props.color} } onClick = { this.props.addLabelFunc.bind(null, this.props.noteId, this.state.labelContent) } >Add</div>
 
       </NoteOptionPages>
     )

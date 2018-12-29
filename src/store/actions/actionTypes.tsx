@@ -22,5 +22,5 @@ export type DELETE_LABEL = typeof DELETE_LABEL;
 export const ADD_COLOR = 'ADD_COLOR';
 export type ADD_COLOR = typeof ADD_COLOR;
 
-export const CLEAR_NOTE_DIALOG = 'CLEAR_NOTE_DIALOG';
-export type CLEAR_NOTE_DIALOG = typeof CLEAR_NOTE_DIALOG;
+// export const CLEAR_NOTE_DIALOG = 'CLEAR_NOTE_DIALOG';
+// export type CLEAR_NOTE_DIALOG = typeof CLEAR_NOTE_DIALOG;
